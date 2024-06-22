@@ -1,6 +1,7 @@
 # Kobbo
 
 **A distributed todo-list cache from Elixir in action, third edition**
+** The code has been adapted to ensure automatic cluster connection **
 
 ## Installation
 
