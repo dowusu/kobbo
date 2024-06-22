@@ -1,6 +1,6 @@
 # Kobbo
 
-**TODO: Add description**
+**A distributed todo-list cache from Elixir in action, third edition**
 
 ## Installation
 
