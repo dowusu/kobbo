@@ -2,7 +2,7 @@
 
 **A distributed todo-list cache from Elixir in action, third edition**
 ** The code has been adapted to ensure automatic cluster connection **
-
+** You can check libcluster or syn out **
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
