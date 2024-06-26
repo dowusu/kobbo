@@ -26,10 +26,8 @@ defmodule Kobbo.List do
   end
   
   def entries(%__MODULE__{} = list, date) do
-    IO.puts("#{inspect(date)}")
     list.entries
     |> Map.values()
-    |> IO.inspect()
     |> Enum.filter(&(&1.date == date))
   end
   
