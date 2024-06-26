@@ -2,7 +2,7 @@ defmodule Kobbo.Server do
   use GenServer
   alias Kobbo.List
   def start_link(todo_name) do
-    GenServer.start_link(__MODULE__, nil, name: via_tuple(todo_name))
+    GenServer.start_link(__MODULE__, todo_name, name: via_tuple(todo_name))
   end
   
   defp via_tuple(name) do
@@ -17,16 +17,18 @@ defmodule Kobbo.Server do
     GenServer.call(server, {:entries, date})
   end
   
-  def init(_) do
-    {:ok, List.new()}
+  def init(todo_name) do
+    {:ok, {List.new(), todo_name}}
   end
   
-  def handle_call({:add_entry, entry}, _from, list) do
-    {:reply, :ok, List.add_entry(list, entry)}
+  def handle_call({:add_entry, entry}, _from, {list, todo_name}) do
+    new_list = List.add_entry(list, entry)
+    Kobbo.Database.store(todo_name, new_list)
+    {:reply, :ok, {new_list, todo_name}}
   end
   
-  def handle_call({:entries, date}, _from, list) do
-    {:reply, List.entries(list, date), list}
+  def handle_call({:entries, date}, _from, {list, todo_name}) do
+    {:reply, List.entries(list, date), {list, todo_name}}
   end 
 
 end

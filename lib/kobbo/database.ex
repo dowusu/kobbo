@@ -1,4 +1,5 @@
 defmodule Kobbo.Database do
+  alias Kobbo.DatabaseWorker
   use Supervisor
   @pool_size 3
   @db_path "./persist"
@@ -18,6 +19,22 @@ defmodule Kobbo.Database do
       id: {Kobbo.DatabaseWorker, worker_id},
       start: {Kobbo.DatabaseWorker, :start_link, [{worker_id, @db_path}]}
     )
+  end
+  
+  def store(key, value) do
+    key
+    |> choose_worker()
+    |> DatabaseWorker.store(key, value)
+  end
+  
+  defp choose_worker(todo_name) do
+    :erlang.phash2(todo_name, @pool_size) + 1
+  end
+  
+  def get(key) do
+    key
+    |> choose_worker()
+    |> DatabaseWorker.get(key)
   end
   
   def child_spec(_) do
